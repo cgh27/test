@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zlw.onlinebookshop.dao.UserDao">
+    
+    <select id="login"  parameterType="com.zlw.onlinebookshop.entity.User" resultType="com.zlw.onlinebookshop.entity.User">
+        SELECT UId,UName,UPassword,UEmail FROM user WHERE UName=#{UName} AND UPassword=#{UPassword}
+    </select>
+
+    
+    <insert id="register">
+        INSERT INTO user VALUES (UUID(),null,#{param1},#{param2},#{param3})
+    </insert>
+
+    <select id="checkUser" resultType="com.zlw.onlinebookshop.entity.User">
+        SELECT * FROM user WHERE UName=#{param} AND 1=1
+    </select>
+
+    <select id="showBooklist" resultType="Map">
+        SELECT uuid,BName,BAtr,BTp,BPrc,SfDate FROM book
+        <if test="BName!=null">
+            WHERE BName LIKE "%"#{BName}"%"
+        </if>
+        LIMIT #{std},#{limit}
+    </select>
+
+    <select id="booklistCount" resultType="java.lang.Integer">
+
+        SELECT count(0) FROM book
+        WHERE 1=1
+        <if test="BName!=null">
+            AND BName LIKE "%"#{BName}"%"
+        </if>
+    </select>
+</mapper>
+
+
+
